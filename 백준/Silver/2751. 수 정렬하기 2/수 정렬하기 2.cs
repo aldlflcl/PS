@@ -1,22 +1,45 @@
 using System.Text;
 
-int[] arr = new int[1_000_000 * 2 + 1];
+StreamReader sr = new StreamReader(new BufferedStream(Console.OpenStandardInput()));
+StreamWriter sw = new StreamWriter(new BufferedStream(Console.OpenStandardOutput()));
 StringBuilder sb = new();
-int n = int.Parse(Console.ReadLine());
-int max = int.MinValue;
+int n = int.Parse(sr.ReadLine());
+int[] arr = new int[1_000_001];
+int[] tmp = new int[1_000_001];
 for (int i = 0; i < n; i++)
+    arr[i] = int.Parse(sr.ReadLine());
+MergeSort(0, n);
+for (int i = 0; i < n; i++)
+    sb.AppendLine(arr[i].ToString());
+sw.WriteLine(sb);
+sw.Close();
+sr.Close();
+
+void MergeSort(int start, int end)
 {
-    int num = int.Parse(Console.ReadLine()) + 1_000_000;
-    max = num > max ? num : max;
-    arr[num]++;
+    if (start + 1 == end) return;
+    int mid = (start + end) / 2;
+    
+    MergeSort(start, mid);
+    MergeSort(mid, end);
+    
+    Merge(start, end);
 }
 
-for (int i = 0; i <= max; i++)
+void Merge(int start, int end)
 {
-    if (arr[i] != 0)
+    int mid = (start + end) / 2;
+    int leftIndex = start;
+    int rightIndex = mid;
+
+    for (int i = start; i < end; i++)
     {
-        sb.AppendLine((i - 1_000_000).ToString());
+        if (leftIndex == mid) tmp[i] = arr[rightIndex++];
+        else if (rightIndex == end) tmp[i] = arr[leftIndex++];
+        else if (arr[leftIndex] <= arr[rightIndex]) tmp[i] = arr[leftIndex++];
+        else tmp[i] = arr[rightIndex++];
     }
-}
 
-Console.WriteLine(sb);
+    for (int i = start; i < end; i++)
+        arr[i] = tmp[i];
+}
