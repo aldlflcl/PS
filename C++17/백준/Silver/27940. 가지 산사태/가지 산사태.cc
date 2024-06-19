@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int N, M, K;
+int N, M, K, t, r;
 
 int main() {
     ios::sync_with_stdio(0);
@@ -11,7 +11,6 @@ int main() {
     cin >> N >> M >> K;
 
     for (int i = 1; i <= M; i++) {
-        int t, r;
         cin >> t >> r;
         K -= r;
         if (K < 0) {
